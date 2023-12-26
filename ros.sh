@@ -22,9 +22,11 @@ sleep 3
 ip route flush default
 ip route add default via 172.29.227.173
 
-#screen -S ros \
+ACCEL_OPT='-enable-kvm -cpu host'
+
 qemu-system-x86_64 \
   -m 512 \
+  $ACCEL_OPT \
   -smp cores=2,threads=1 \
   -net nic,model=virtio,macaddr=00:16:3e:16:61:86 -net bridge,br=br0 \
   -net nic,model=virtio,macaddr=80:05:88:00:00:02 \
