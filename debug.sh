@@ -6,11 +6,17 @@ cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
 #获取当前数据
-macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\'`
+macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
 address=`nmcli -g IP4.ADDRESS device show eth0`
 
 [ -e /dev/kvm ] && ACCEL_OPT='-enable-kvm -cpu host'
+
+echo "[INFO] macaddr: $macaddr"
+echo "[INFO] address: $address"
+echo "[INFO] gateway: $gateway"
+
+sleep 10
 
 qemu-system-x86_64 \
   -m 512 \

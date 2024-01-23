@@ -6,15 +6,15 @@ cd "$(realpath "$PWD")"
 sleep 10
 
 #获取当前数据
-macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\'`
+macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
 address=`nmcli -g IP4.ADDRESS device show eth0`
 
 #移除eth0的IP(必须不能有IP!!)
 nmcli connection modify --temporary eth0 -ipv4.dns '' -ipv4.gateway '' -ipv4.addresses '' -ipv4.routes '' ipv4.method disabled
 nmcli connection modify --temporary eth0 ipv6.method disabled
-nmcli connection up eth0
-# nmcli device reapply eth0
+# nmcli connection up eth0
+nmcli device reapply eth0
 
 #腾出MAC地址给ROS
 ifconfig eth0 hw ether 00:11:22:33:44:55
