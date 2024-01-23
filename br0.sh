@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #新建网桥
-nmcli connection show br0 || \
+nmcli -g GENERAL.HWADDR device show br0 || \
 nmcli connection add type bridge ifname br0 con-name br0
 
 #关闭stp
