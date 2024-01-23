@@ -20,6 +20,7 @@ gateway1=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]
 mask0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '/.+$'`
 address0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'`
 address1="$address0.2$mask0"
+echo "[INFO] IP $address ==> $address1"
 
 sleep 10
 
@@ -36,7 +37,6 @@ ifconfig br0 up
 
 
 #更新网桥IP
-echo "[INFO] IP $address ==> $address1"
 nmcli connection modify br0 ipv4.addresses "$address1" ipv4.gateway "$gateway1" ipv4.dns "$gateway1" ipv4.method manual ipv6.method disabled
 
 #生效
