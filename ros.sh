@@ -3,6 +3,10 @@
 cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
+#重置系统网卡名
+nmcli connection modify 'System eth0' con-name eth0
+nmcli connection modify 'cloud-init eth0' con-name eth0
+
 #获取当前数据
 macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
