@@ -3,8 +3,6 @@
 cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
-sleep 10
-
 #获取当前数据
 macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
@@ -12,6 +10,8 @@ address=`nmcli -g IP4.ADDRESS device show eth0`
 echo "[INFO] macaddr: $macaddr"
 echo "[INFO] address: $address"
 echo "[INFO] gateway: $gateway"
+
+sleep 10
 
 #移除eth0的IP(必须不能有IP!!)
 nmcli connection modify --temporary eth0 -ipv4.dns '' -ipv4.gateway '' -ipv4.addresses '' -ipv4.routes '' ipv4.method disabled
