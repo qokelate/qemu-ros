@@ -9,6 +9,9 @@ sleep 10
 macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
 address=`nmcli -g IP4.ADDRESS device show eth0`
+echo "[INFO] macaddr: $macaddr"
+echo "[INFO] address: $address"
+echo "[INFO] gateway: $gateway"
 
 #移除eth0的IP(必须不能有IP!!)
 nmcli connection modify --temporary eth0 -ipv4.dns '' -ipv4.gateway '' -ipv4.addresses '' -ipv4.routes '' ipv4.method disabled
@@ -17,7 +20,7 @@ nmcli connection modify --temporary eth0 ipv6.method disabled
 nmcli device reapply eth0
 
 #腾出MAC地址给ROS
-ifconfig eth0 hw ether 00:11:22:33:44:55
+ifconfig eth0 hw ether '00:11:22:33:44:55'
 brctl addif br0 eth0
 ifconfig br0 up
 
