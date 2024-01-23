@@ -9,7 +9,6 @@ sleep 10
 macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
 address=`nmcli -g IP4.ADDRESS device show eth0`
-address2=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[^/]+'`
 
 #移除eth0的IP(必须不能有IP!!)
 nmcli connection modify --temporary eth0 -ipv4.dns '' -ipv4.gateway '' -ipv4.addresses '' -ipv4.routes '' ipv4.method disabled
