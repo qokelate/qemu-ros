@@ -47,7 +47,7 @@ sleep 3
 
 #设置ROS为网关
 # ip route flush default
-ip route add default via "$gateway"
+ip route add default via "$gateway1"
 
 [ -e /dev/kvm ] && ACCEL_OPT='-enable-kvm -cpu host'
 
