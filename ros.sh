@@ -15,12 +15,18 @@ echo "[INFO] macaddr: $macaddr"
 echo "[INFO] address: $address"
 echo "[INFO] gateway: $gateway"
 
+
+gateway1=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'`
+mask0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '/.+$'`
+address0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'`
+address1="$address0.2$mask0"
+
 sleep 10
 
 #移除eth0的IP(必须不能有IP!!)
 nmcli connection modify --temporary eth0 -ipv4.dns '' -ipv4.gateway '' -ipv4.addresses '' -ipv4.routes '' ipv4.method disabled
 nmcli connection modify --temporary eth0 ipv6.method disabled
-# nmcli connection up eth0
+nmcli connection up eth0
 nmcli device reapply eth0
 
 #腾出MAC地址给ROS
@@ -28,10 +34,19 @@ ifconfig eth0 hw ether '00:11:22:33:44:55'
 brctl addif br0 eth0
 ifconfig br0 up
 
+
+#更新网桥IP
+echo "[INFO] IP $address ==> $address1"
+nmcli connection modify br0 ipv4.addresses "$address1" ipv4.gateway "$gateway1" ipv4.dns "$gateway1" ipv4.method manual ipv6.method disabled
+
+#生效
+# nmcli device reapply br0
+nmcli connection up br0
+
 sleep 3
 
 #设置ROS为网关
-ip route flush default
+# ip route flush default
 ip route add default via "$gateway"
 
 [ -e /dev/kvm ] && ACCEL_OPT='-enable-kvm -cpu host'
