@@ -18,6 +18,7 @@ echo "[INFO] gateway: $gateway"
 [ -z "$gateway" ] && exit
 [ -z "$address" ] && exit
 
+#拿到新IP
 gateway1=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'`
 mask0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '/.+$'`
 address0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'`
