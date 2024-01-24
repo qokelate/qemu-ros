@@ -5,7 +5,7 @@
 #所有网卡加入WAN桥
 /system script add dont-require-permissions=no name=reset-WAN-bridge policy=read,write source="/interface/ethernet/reset-mac-address [find];\r\
     \n\r\
-    \n/interface bridge port remove [find];\r\
+    \n#/interface bridge port remove [find];\r\
     \n\r\
     \n:foreach id in=[/interface ethernet find disabled=no] do={\r\
     \n    :local ifname [/interface ethernet get \$id name];\r\
