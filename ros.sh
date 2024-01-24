@@ -14,7 +14,9 @@ address=`nmcli -g IP4.ADDRESS device show eth0`
 echo "[INFO] macaddr: $macaddr"
 echo "[INFO] address: $address"
 echo "[INFO] gateway: $gateway"
-
+[ -z "$macaddr" ] && exit
+[ -z "$gateway" ] && exit
+[ -z "$address" ] && exit
 
 gateway1=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'`
 mask0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '/.+$'`
@@ -61,6 +63,10 @@ qemu-system-x86_64 \
   -device "ide-hd,drive=disk00,bus=ide.0,serial=00000000000000000001,model=VMware Virtual IDE Hard Drive" \
   -boot d \
   -nographic
+
+#恢复通网
+ifconfig eth0 hw ether "$macaddr"
+ifconfig br0 0
 
 exit
 
