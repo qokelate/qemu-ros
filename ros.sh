@@ -8,7 +8,7 @@ nmcli connection modify 'System eth0' con-name eth0
 nmcli connection modify 'cloud-init eth0' con-name eth0
 
 #获取当前数据
-macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
+macaddr=`ethtool -P eth0 | awk '{print $3}'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
 address=`nmcli -g IP4.ADDRESS device show eth0`
 echo "[INFO] macaddr: $macaddr"
@@ -18,7 +18,7 @@ echo "[INFO] gateway: $gateway"
 [ -z "$gateway" ] && exit
 [ -z "$address" ] && exit
 
-#拿到新IP
+#计算新IP
 gateway1=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'`
 mask0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '/.+$'`
 address0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'`

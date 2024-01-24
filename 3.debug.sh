@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
 #获取当前数据
-macaddr=`nmcli -g GENERAL.HWADDR device show eth0|tr -d '\\\\'`
+macaddr=`ethtool -P eth0 | awk '{print $3}'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
 address=`nmcli -g IP4.ADDRESS device show eth0`
 
