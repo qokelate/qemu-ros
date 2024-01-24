@@ -65,8 +65,9 @@ qemu-system-x86_64 \
   -nographic
 
 #恢复通网
-ifconfig eth0 hw ether "$macaddr"
-ifconfig br0 0
+ifconfig br0 hw ether "$macaddr"
+nmcli connection modify --temporary br0 ipv4.method auto
+nmcli connection up br0
 
 exit
 
