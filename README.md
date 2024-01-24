@@ -1,2 +1,2 @@
 
-tested in fedora 39 x64 only.
+tested in fedora 34+ x64 only.
