@@ -5,6 +5,11 @@ set -ex
 cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
+#重置系统网卡名
+nmcli connection modify 'System eth0' con-name eth0 || true
+nmcli connection modify 'cloud-init eth0' con-name eth0 || true
+nmcli connection modify 'Wired connection 1' con-name eth0 || true
+
 #获取当前数据
 macaddr=`ethtool -P eth0 | awk '{print $3}'`
 gateway=`nmcli -g IP4.GATEWAY device show eth0`
