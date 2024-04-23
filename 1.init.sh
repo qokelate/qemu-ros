@@ -3,7 +3,7 @@
 cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
-dnf install -y qemu-system-x86 qemu-img bridge-utils supervisor NetworkManager-tui
+dnf install -y qemu-system-x86 qemu-img bridge-utils supervisor NetworkManager-tui ethtool
 
 echo 'allow all'>/etc/qemu/bridge.conf
 
