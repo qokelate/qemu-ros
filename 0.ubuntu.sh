@@ -5,7 +5,7 @@ systemctl disable systemd-networkd.service
 systemctl mask systemd-networkd.service
 systemctl unmask NetworkManager
 systemctl enable NetworkManager
-systemctl start NetworkManager
+systemctl restart NetworkManager
 
 exit
 
