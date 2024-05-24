@@ -4,10 +4,10 @@ cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
 which apt && \
-apt install -y qemu-system-x86 qemu-utils bridge-utils supervisor ethtool network-manager
+apt install -y qemu-system-x86 qemu-utils bridge-utils supervisor ethtool network-manager unzip
 
 which dnf && \
-dnf install -y qemu-system-x86 qemu-img bridge-utils supervisor NetworkManager-tui ethtool
+dnf install -y qemu-system-x86 qemu-img bridge-utils supervisor NetworkManager-tui ethtool unzip
 
 mkdir -pv '/etc/qemu'
 echo 'allow all'>/etc/qemu/bridge.conf
