@@ -5,7 +5,8 @@ cd "$(realpath "$PWD")"
 
 # ifname="ens32"
 ifname=`nmcli device | awk '$2=="ethernet" {print $1}'`
-conname=`nmcli device | awk '$2=="ethernet" {print $4}'`
+conname=`nmcli -t -f uuid,type,name con|grep ethernet|grep -oE ':[^:]+$'`
+conname="${conname:1}"
 
 #重置系统网卡名
 nmcli connection modify "$conname" con-name "$ifname" || true
