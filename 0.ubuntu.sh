@@ -7,6 +7,8 @@ systemctl unmask NetworkManager
 systemctl enable NetworkManager
 systemctl restart NetworkManager
 
+netplan apply
+
 exit
 
 https://github.com/cockpit-project/cockpit/issues/15972
