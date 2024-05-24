@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
 which apt && \
-apt install -y qemu-system-x86 qemu-utils bridge-utils supervisor ethtool network-manager unzip
+apt install -y qemu-system-x86 qemu-utils bridge-utils ethtool network-manager unzip net-tools
 
 which dnf && \
 dnf install -y qemu-system-x86 qemu-img bridge-utils supervisor NetworkManager-tui ethtool unzip
