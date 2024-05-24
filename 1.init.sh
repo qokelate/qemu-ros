@@ -3,8 +3,13 @@
 cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
+which apt && \
+apt install -y qemu-system-x86 qemu-utils bridge-utils supervisor ethtool network-manager
+
+which dnf && \
 dnf install -y qemu-system-x86 qemu-img bridge-utils supervisor NetworkManager-tui ethtool
 
+mkdir -pv '/etc/qemu'
 echo 'allow all'>/etc/qemu/bridge.conf
 
 cp -fv ros.ini /etc/supervisord.d/

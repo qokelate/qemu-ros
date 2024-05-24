@@ -14,6 +14,7 @@ nmcli connection modify br0 ipv4.method disabled
 #生效
 # nmcli device reapply br0
 nmcli connection up br0
+# ifconfig br0 up
 
 # 查看当前连接
 nmcli connection show

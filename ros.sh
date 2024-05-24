@@ -3,15 +3,20 @@
 cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
+# ifname="ens32"
+ifname=`nmcli device | awk '$2=="ethernet" {print $1}'`
+conname=`nmcli device | awk '$2=="ethernet" {print $4}'`
+
 #重置系统网卡名
-nmcli connection modify 'System eth0' con-name eth0
-nmcli connection modify 'cloud-init eth0' con-name eth0
-nmcli connection modify 'Wired connection 1' con-name eth0
+nmcli connection modify "$conname" con-name "$ifname" || true
+# nmcli connection modify 'System eth0' con-name "$ifname" || true
+# nmcli connection modify 'cloud-init eth0' con-name "$ifname" || true
+# nmcli connection modify 'Wired connection 1' con-name "$ifname" || true
 
 #获取当前数据
-macaddr=`ethtool -P eth0 | awk '{print $3}'`
-gateway=`nmcli -g IP4.GATEWAY device show eth0`
-address=`nmcli -g IP4.ADDRESS device show eth0`
+macaddr=`ethtool -P "$ifname" | awk '{print $3}'`
+gateway=`nmcli -g IP4.GATEWAY device show "$ifname"`
+address=`nmcli -g IP4.ADDRESS device show "$ifname"`
 echo "[INFO] macaddr: $macaddr"
 echo "[INFO] address: $address"
 echo "[INFO] gateway: $gateway"
@@ -20,23 +25,21 @@ echo "[INFO] gateway: $gateway"
 [ -z "$address" ] && exit
 
 #计算新IP
-gateway1=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'`
-mask0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '/.+$'`
-address0=`nmcli -g IP4.ADDRESS device show eth0|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'`
+gateway1=`nmcli -g IP4.ADDRESS device show "$ifname"|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+'`
+mask0=`nmcli -g IP4.ADDRESS device show "$ifname"|grep -oE '/.+$'`
+address0=`nmcli -g IP4.ADDRESS device show "$ifname"|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'`
 address1="$address0.2$mask0"
 echo "[INFO] IP $address ==> $address1"
 
-sleep 10
-
-#移除eth0的IP(必须不能有IP!!)
-nmcli connection modify --temporary eth0 -ipv4.dns '' -ipv4.gateway '' -ipv4.addresses '' -ipv4.routes '' ipv4.method disabled
-nmcli connection modify --temporary eth0 ipv6.method disabled
-nmcli connection up eth0
-nmcli device reapply eth0
+#移除"$ifname"的IP(必须不能有IP!!)
+nmcli connection modify --temporary "$ifname" -ipv4.dns '' -ipv4.gateway '' -ipv4.addresses '' -ipv4.routes '' ipv4.method disabled
+nmcli connection modify --temporary "$ifname" ipv6.method disabled
+nmcli connection up "$ifname"
+nmcli device reapply "$ifname"
 
 #腾出MAC地址给ROS
-ifconfig eth0 hw ether '00:11:22:33:44:55'
-brctl addif br0 eth0
+ifconfig "$ifname" hw ether '00:11:22:33:44:55'
+brctl addif br0 "$ifname"
 ifconfig br0 up
 
 
@@ -47,17 +50,19 @@ nmcli connection modify br0 ipv4.addresses "$address1" ipv4.gateway "$gateway1" 
 # nmcli device reapply br0
 nmcli connection up br0
 
-sleep 3
 
 #设置ROS为网关
 # ip route flush default
 ip route add default via "$gateway1"
 
-[ -e /dev/kvm ] && ACCEL_OPT='-enable-kvm -cpu host'
+# 看看对不对
+nmcli
+route -n
+sleep 10
 
-qemu-system-x86_64 \
+[ -e /dev/kvm ] && ACCEL_OPT='-enable-kvm -cpu host'
+qemu-system-x86_64 $ACCEL_OPT \
   -m 512 \
-  $ACCEL_OPT \
   -smp cores=2,threads=1 \
   -net "nic,model=virtio,macaddr=$macaddr" -net "bridge,br=br0" \
   -drive "if=none,id=disk00,format=qcow2,file=$PWD/ros.qcow2" \
@@ -71,9 +76,9 @@ qemu-system-x86_64 \
 # nmcli connection up br0
 
 ifconfig br0 down
-ifconfig eth0 hw ether "$(ethtool -P eth0 | awk '{print $3}')"
-nmcli connection modify --temporary eth0 ipv4.method auto
-nmcli connection up eth0
+ifconfig "$ifname" hw ether "$(ethtool -P "$ifname" | awk '{print $3}')"
+nmcli connection modify --temporary "$ifname" ipv4.method auto
+nmcli connection up "$ifname"
 
 exit
 
