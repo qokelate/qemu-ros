@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+apt install -y network-manager || exit
+
 systemctl stop systemd-networkd.service
 systemctl disable systemd-networkd.service
 systemctl mask systemd-networkd.service
