@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 apt install -y network-manager || exit
 
@@ -24,6 +24,7 @@ systemctl restart NetworkManager
 #netplan apply
 
 exit
+
 
 https://github.com/cockpit-project/cockpit/issues/15972
 

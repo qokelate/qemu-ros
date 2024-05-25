@@ -5,19 +5,7 @@
 
 /interface/ethernet/reset-mac-address [find]
 /interface bridge port remove [find];
-
-/system script add dont-require-permissions=no name=reset-WAN-bridge policy=read,write source="/interface/ethernet/reset-mac-address [find];\r\
-    \n\r\
-    \n#/interface bridge port remove [find];\r\
-    \n\r\
-    \n:foreach id in=[/interface ethernet find disabled=no] do={\r\
-    \n    :local ifname [/interface ethernet get \$id name];\r\
-    \n    /log info message=\"[INFO] found ethernet: \$ifname\";\r\
-    \n    /interface bridge port add bridge=\"WAN\" interface=\"\$ifname\";\r\
-    \n    /log info message=\"[INFO] added to WAN: \$ifname\";\r\
-    \n}\r\
-    \n"
-/system/script/run reset-WAN-bridge
+/interface/bridge/port add bridge=WAN interface=[/interface/ethernet/find]
 
 /ip service set ftp disabled=yes
 /ip service set www disabled=yes
@@ -37,3 +25,5 @@
 # 转发ssh和端口段
 /ip firewall nat add action=accept chain=dstnat dst-address-list=WANIP dst-port=23,8728,8291 protocol=tcp
 /ip firewall nat add disabled=yes action=dst-nat chain=dstnat dst-address-list=WANIP dst-port=22,10000-20000 protocol=tcp to-addresses=10.140.0.22
+
+
