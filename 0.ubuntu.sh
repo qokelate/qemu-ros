@@ -10,8 +10,6 @@ network:
   renderer: NetworkManager
   ethernets:
     alleths:
-      match:
-        name: en*
       dhcp4: true
       dhcp6: false
 EOF
