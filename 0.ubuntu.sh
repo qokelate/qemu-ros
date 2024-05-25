@@ -4,7 +4,7 @@ apt install -y network-manager || exit
 
 rm -rf /etc/netplan
 mkdir -pv /etc/netplan
-cat <EOF>/etc/netplan/99-netcfg.yaml
+cat <<EOF >/etc/netplan/99-netcfg.yaml
 network:
   version: 2
   renderer: NetworkManager
