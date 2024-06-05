@@ -21,6 +21,11 @@ systemctl unmask NetworkManager
 systemctl enable NetworkManager
 systemctl restart NetworkManager
 
+# 删除无效连接
+nmcli -t -f uuid,device con | grep -E ':$' | while read line; do
+  nmcli con delete "${line:0:36}"
+done
+
 exit
 
 
