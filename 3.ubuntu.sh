@@ -21,8 +21,6 @@ systemctl unmask NetworkManager
 systemctl enable NetworkManager
 systemctl restart NetworkManager
 
-#netplan apply
-
 exit
 
 

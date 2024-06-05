@@ -3,6 +3,11 @@
 cd "$(dirname "$0")"
 cd "$(realpath "$PWD")"
 
+# 删除无效连接
+nmcli -t -f uuid,device con | grep -E ':$' | while read line; do
+  nmcli con delete "${line:0:36}"
+done
+
 # ifname="ens32"
 ifname=`nmcli device | awk '$2=="ethernet" {print $1}'`
 conname=`nmcli -t -f uuid,type,name con|grep ethernet|grep -oE ':[^:]+$'`

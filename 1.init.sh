@@ -16,10 +16,6 @@ echo 'allow all'>/etc/qemu/bridge.conf
 cp -fv ros.ini /etc/supervisord.d/
 systemctl disable supervisord
 
-unzip kvm-ros.zip
-mv -fv ros/ros.qcow2 ./
-rm -rf ros
-
 [ '/data1/ros' = "$PWD" ] || ln -sfv "$PWD" '/data1/ros'
 
 exit
