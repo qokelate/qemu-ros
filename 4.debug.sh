@@ -16,6 +16,7 @@ conname=`nmcli -t -f uuid,type,name con|grep ethernet|grep -oE ':[^:]+$'`
 conname="${conname:1}"
 
 #重置系统网卡名
+[ "$ifname" = "$conname" ] || \
 nmcli connection modify "$conname" con-name "$ifname" || true
 # nmcli connection modify 'System eth0' con-name "$ifname" || true
 # nmcli connection modify 'cloud-init eth0' con-name "$ifname" || true
