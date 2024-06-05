@@ -64,7 +64,7 @@ ip route add default via "$gateway1"
 # 看看对不对
 nmcli
 route -n
-sleep 10
+# sleep 10
 
 [ -e /dev/kvm ] && ACCEL_OPT='-enable-kvm -cpu host'
 qemu-system-x86_64 $ACCEL_OPT \

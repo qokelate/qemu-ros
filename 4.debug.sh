@@ -30,7 +30,7 @@ echo "[INFO] macaddr: $macaddr"
 echo "[INFO] address: $address"
 echo "[INFO] gateway: $gateway"
 
-sleep 10
+# sleep 10
 
 [ -e /dev/kvm ] && ACCEL_OPT='-enable-kvm -cpu host'
 qemu-system-x86_64 $ACCEL_OPT \
