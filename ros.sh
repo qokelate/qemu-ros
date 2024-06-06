@@ -36,6 +36,7 @@ gateway1=`nmcli -g IP4.ADDRESS device show "$ifname"|grep -oE '^[0-9]+\.[0-9]+\.
 mask0=`nmcli -g IP4.ADDRESS device show "$ifname"|grep -oE '/.+$'`
 address0=`nmcli -g IP4.ADDRESS device show "$ifname"|grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'`
 address1="$address0.2$mask0"
+[ "$address" = "$address1" ] && address1="$address0.12$mask0"
 echo "[INFO] IP $address ==> $address1"
 
 #移除"$ifname"的IP(必须不能有IP!!)

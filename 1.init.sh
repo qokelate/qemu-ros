@@ -13,7 +13,7 @@ dnf install -y qemu-system-x86 qemu-img bridge-utils supervisor NetworkManager-t
 mkdir -pv '/etc/qemu'
 echo 'allow all'>/etc/qemu/bridge.conf
 
-cp -fv ros.ini /etc/supervisord.d/
+cp -fv misc/ros.ini /etc/supervisord.d/
 systemctl disable supervisord
 
 [ '/data1/ros' = "$PWD" ] || ln -sfv "$PWD" '/data1/ros'
