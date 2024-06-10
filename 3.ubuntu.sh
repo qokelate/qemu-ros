@@ -26,6 +26,14 @@ nmcli -t -f uuid,device con | grep -E ':$' | while read line; do
   nmcli con delete "${line:0:36}"
 done
 
+#生效
+# nmcli device reapply br0
+nmcli connection up br0
+# ifconfig br0 up
+
+# 查看当前连接
+nmcli connection show
+
 exit
 
 
